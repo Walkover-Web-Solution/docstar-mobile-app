@@ -21,7 +21,7 @@ const LoginScreen = () => {
             {isLoading && <Text>Loading user info...</Text>}
             <ShowProxyAuth config={{}}  referenceId='1258584g170245213365795ba5a63ab' onLoginSuccess={(data) => {
                 console.log(data)
-                dispatch(setProxyAuthToken(data.proxy_auth_token))
+                dispatch(setProxyAuthToken(data.data.proxy_auth_token))
             }} onLoginFailure={(data) => {
                 console.log("Login failed", data)
             }} />
