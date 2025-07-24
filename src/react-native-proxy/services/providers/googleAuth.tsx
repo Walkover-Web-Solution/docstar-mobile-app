@@ -8,7 +8,7 @@ import {
  * @param {object} config - Google Sign-In configuration
  */
 export const configureGoogleSignIn = (config: any) => {
-    console.log(config)
+    console.log(config,"-0-")
     GoogleSignin.configure(config);
 };
 

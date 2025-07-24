@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useLazyGetUserQuery } from '../redux/services/apis/userApi';
-import { ShowProxyAuth } from '../react-native-proxy'
+import { ShowProxyAuth } from '@msg91comm/react-native-36blocks-proxy'
 import { setProxyAuthToken } from '../redux/features/userInfo/userInfoSlice';
 import { useAppDispatch } from '../hooks/hooks';
 

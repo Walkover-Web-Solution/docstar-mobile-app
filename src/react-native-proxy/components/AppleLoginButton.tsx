@@ -25,7 +25,8 @@ const AppleLoginButton = ({
     try {
       if (appleAuth?.isSupported) {
         const appleAuthRequestResponse = await appleAuth.performRequest({
-          requestedOperation: appleAuth.Operation.LOGIN
+          requestedOperation: appleAuth.Operation.LOGIN,
+          requestedScopes: [appleAuth.Scope.EMAIL],
         });
 
         const { identityToken, authorizationCode } = appleAuthRequestResponse;
