@@ -1,17 +1,41 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useAppDispatch } from '../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { setUserInfo } from '../redux/features/userInfo/userInfoSlice';
 import { useGetUserQuery, useSwitchWorkspaceMutation } from '../redux/services/apis/userApi';
+import { collectionsApi } from '../redux/services/apis/collectionsApi';
 
 export default function AllWorkspace() {
     const dispatch = useAppDispatch();
     const { data, isLoading, isFetching, refetch } = useGetUserQuery();
     const [switchWorkspace] = useSwitchWorkspaceMutation();
+    const currentOrgId = useAppSelector(state => state.userInfo.currentOrgId);
 
-    const handleOrgSelect = (org: any) => {
-        dispatch(setUserInfo({ currentOrgId: org?.id, currentOrgData: org }));
-        switchWorkspace(org.id);
+    const handleOrgSelect = async (org: any) => {
+        try {
+            console.log('Switching from orgId:', currentOrgId, 'to:', org.id);
+            
+            // Step 1: Completely reset the collections API state to clear all cached data
+            dispatch(collectionsApi.util.resetApiState());
+            
+            // Step 2: Update Redux state with new organization
+            dispatch(setUserInfo({ currentOrgId: org?.id, currentOrgData: org }));
+            
+            // Step 3: Switch workspace on backend
+            await switchWorkspace(org.id);
+            
+            // Step 4: Small delay to ensure state is properly updated
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            // Step 5: Force fresh fetch for the new workspace
+            dispatch(collectionsApi.endpoints.getAllCollections.initiate(org.id, { 
+                forceRefetch: true,
+                subscribe: false 
+            }));
+            
+        } catch (error) {
+            console.error('Error switching workspace:', error);
+        }
     };
 
     if (isLoading) {
@@ -37,8 +61,6 @@ export default function AllWorkspace() {
         />
     );
 }
-
-
 
 const styles = StyleSheet.create({
     loadingContainer: {
