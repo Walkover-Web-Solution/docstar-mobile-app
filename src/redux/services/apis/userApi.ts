@@ -42,8 +42,19 @@ export const userApi = createApi({
                 method: 'POST',
                 body: { company_ref_id: workspaceId }
             })
+        }),
+        updateUserProfile: builder.mutation<void, { name: string }>({
+            query: (userData) => ({
+                url: '/updateUser',
+                method: 'PUT',
+                body: {
+                    user: {
+                        name: userData.name
+                    }
+                }
+            })
         })
     }),
 });
 
-export const { useGetUserQuery, useLazyGetUserQuery, useSwitchWorkspaceMutation } = userApi;
+export const { useGetUserQuery, useLazyGetUserQuery, useSwitchWorkspaceMutation, useUpdateUserProfileMutation } = userApi;

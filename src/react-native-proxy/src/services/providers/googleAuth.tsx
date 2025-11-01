@@ -1,6 +1,5 @@
 import {
-    GoogleSignin,
-    type SignInResponse,
+    GoogleSignin
 } from '@react-native-google-signin/google-signin';
 
 /**
@@ -8,8 +7,9 @@ import {
  * @param {object} config - Google Sign-In configuration
  */
 export const configureGoogleSignIn = (config: any) => {
-    console.log(config,"-0-")
     GoogleSignin.configure(config);
+
+    
 };
 
 /**
@@ -23,6 +23,8 @@ export const googleLogin = async () => {
         // This will prompt for consent and return auth code
         await GoogleSignin.signIn();
         const tokens = await GoogleSignin.getTokens();
+        console.log("tokendddd------>", tokens);
+        
         return tokens
     } catch (error: any) {
         console.error('Google Sign In Error:', error);

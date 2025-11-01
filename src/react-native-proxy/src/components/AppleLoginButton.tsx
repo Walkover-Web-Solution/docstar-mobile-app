@@ -2,8 +2,7 @@ import {
   appleAuth,
   AppleButton
 } from '@invertase/react-native-apple-authentication';
-import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import { FeatureApis } from '../apis/featureApis';
 
 const AppleLoginButton = ({
@@ -22,16 +21,36 @@ const AppleLoginButton = ({
 }) => {
 
   const handleAppleLogin = async () => {
+    // Show alert asking user not to hide email
+    Alert.alert(
+      "Apple Sign In",
+      "Please don't hide your email address. We need your email for proper authentication and identification",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Continue",
+          onPress: () => performAppleLogin()
+        }
+      ]
+    );
+  };
+
+  const performAppleLogin = async () => {
     try {
       if (appleAuth?.isSupported) {
         const appleAuthRequestResponse = await appleAuth.performRequest({
           requestedOperation: appleAuth.Operation.LOGIN,
-          requestedScopes: [appleAuth.Scope.EMAIL],
+          requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
         });
+    console.log(appleAuthRequestResponse,"Apple login ");
 
         const { identityToken, authorizationCode } = appleAuthRequestResponse;
-        const state = feature?.urlLink?.split('state=')[1]?.split('&')[0];
-
+        const state = feature?.state ?? (feature?.urlLink?.split('state=')[1]?.split('&')[0] || '');
+        console.log("state=========",state);
+        
         if (!identityToken) {
           throw new Error('Apple Sign-In failed - no identity token returned.');
         }

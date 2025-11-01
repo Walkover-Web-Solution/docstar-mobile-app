@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/loginScreen';
 import { useAppSelector } from '../hooks/hooks';
 import AllWorkspace from '../screens/allWorkspace';
+import EditProfile from '../screens/editProfile';
 const Stack = createStackNavigator();
 
 const AuthNavigator = () => {
@@ -12,11 +13,14 @@ const AuthNavigator = () => {
     }));
 
     return (
-        <Stack.Navigator screenOptions={{ headerShown: true }}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             {!token ? (
                 <Stack.Screen name="Login" component={LoginScreen} />
             ) : !currentOrgId ? (
-                <Stack.Screen name="Select Workspace" component={AllWorkspace} />
+                <>
+                    <Stack.Screen name="Select Workspace" component={AllWorkspace} />
+                    <Stack.Screen name="EditProfile" component={EditProfile} />
+                </>
             ) : null}
         </Stack.Navigator>
     );

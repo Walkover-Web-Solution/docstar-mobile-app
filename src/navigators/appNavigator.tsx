@@ -8,6 +8,7 @@ import SearchOverlay from '../components/searchOverlay';
 import { useAppSelector } from '../hooks/hooks';
 import AllCollections from '../screens/allCollection';
 import AllPages from '../screens/allPages';
+import EditProfile from '../screens/editProfile';
 import { withSafeArea } from '../hoc/safeAreaHoc';
 
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ const AppNavigator = () => {
                 <Stack.Screen name="CollectionsList" component={AllCollections} options={{ headerShown: false }} />
                 <Stack.Screen name="PageList" component={AllPages} options={{ headerShown: true }} />
                 <Stack.Screen name="PageDetail" component={PageHtmlRenderer} options={{ headerShown: true }} />
+                <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
             </Stack.Navigator>
 
             <ChatBot

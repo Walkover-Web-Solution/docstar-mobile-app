@@ -5,7 +5,8 @@ import {
 import { FeatureApis } from '../apis/featureApis';
 import GoogleLoginButton from './GoogleLoginButton';
 import AppleLoginButton from './AppleLoginButton';
-import { GoogleFeatureType } from '../types/features';
+import OTPLoginButton from './OTPLoginButton';
+import type { GoogleFeatureType } from '../types/features';
 
 const ProxyAuth = ({
     referenceId,
@@ -45,12 +46,14 @@ const ProxyAuth = ({
         <View style={{
             gap: 10
         }}>
-            {featuresList?.length && featuresList?.map((feature: GoogleFeatureType, index: number) => {
+            {featuresList?.length > 0 && featuresList?.map((feature: GoogleFeatureType, index: number) => {
+                
+                
                 const props = {
                     referenceId,
                     onLoginSuccess,
                     onLoginFailure,
-                    buttonText,
+                    buttonText: feature?.text || buttonText,
                     buttonStyle,
                     textStyle,
                     loadingColor,
@@ -65,7 +68,12 @@ const ProxyAuth = ({
 
                     case 'Continue with Apple':
                         return <AppleLoginButton key={`apple-${index}`} {...props} />
+                    
+                    case 'Login With OTP':
+                        return <OTPLoginButton key={`otp-${index}`} {...props} />
+                    
                     default:
+                        
                         return null
                 }
             })}
